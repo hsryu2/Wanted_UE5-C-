@@ -12,7 +12,7 @@ UTeacher::UTeacher()
 
 void UTeacher::DoLesson()
 {
-	Super::DoLesson();
+	ILessonInterface::DoLesson();
 	UE_LOG(
 		LogTemp,
 		Log,

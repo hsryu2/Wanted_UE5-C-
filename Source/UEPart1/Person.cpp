@@ -1,17 +1,12 @@
-// Fill out your copyright notice in the Description page of Project Settings.
+ï»¿// Fill out your copyright notice in the Description page of Project Settings.
 
 
 #include "Person.h"
 
 UPerson::UPerson()
 {
-	// ±âº» °ª ¼³Á¤.
-	Name = TEXT("È«±æµ¿");
+	// ê¸°ë³¸ ê°’ ì„¤ì •.
+	Name = TEXT("í™ê¸¸ë™");
 	Year = 1;
 	
-}
-
-void UPerson::DoLesson()
-{
-	UE_LOG(LogTemp, Log, TEXT("%s´ÔÀÌ ¼ö¾÷¿¡ Âü¿©ÇÕ´Ï´Ù."), *Name);
 }
