@@ -1,10 +1,10 @@
-// Fill out your copyright notice in the Description page of Project Settings.
+ï»¿// Fill out your copyright notice in the Description page of Project Settings.
 
 #pragma once
 
 #include "CoreMinimal.h"
 #include "Engine/GameInstance.h"
-#include "MyGameInstance.generated.h"1
+#include "MyGameInstance.generated.h"
 
 /**
  * 
@@ -18,11 +18,16 @@ public:
 	UMyGameInstance();
 	
 private:
-	// °ÔÀÓ ÀÎ½ºÅÏ½º¸¦ ÃÊ±âÈ­ÇÒ ¶§ »ç¿ëÇÏ´Â ÇÔ¼ö.
+	// ê²Œì„ ì¸ìŠ¤í„´ìŠ¤ë¥¼ ì´ˆê¸°í™”í•  ë•Œ ì‚¬ìš©í•˜ëŠ” í•¨ìˆ˜.
 	virtual void Init() override;
 
 private:
-	// ÇĞ±³ ÀÌ¸§ º¯¼ö.
+	// í•™êµ ì´ë¦„ ë³€ìˆ˜.
 	UPROPERTY()
 	FString SchoolName;
+
+	// í•™ì‚¬ ì •ë³´ ê°ì²´.
+	UPROPERTY()
+	TObjectPtr<class UCourseInfo> CourseInfo;
+
 };
