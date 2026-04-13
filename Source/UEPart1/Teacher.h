@@ -1,4 +1,4 @@
-﻿// Fill out your copyright notice in the Description page of Project Settings.
+// Fill out your copyright notice in the Description page of Project Settings.
 
 #pragma once
 
@@ -6,7 +6,6 @@
 #include "Person.h"
 #include "LessonInterface.h"
 #include "Teacher.generated.h"
-
 
 /**
  * 
@@ -22,9 +21,4 @@ public:
 	UTeacher();
 
 	virtual void DoLesson() override;
-
-private:
-	UPROPERTY()
-	int32 Id;
-
 };

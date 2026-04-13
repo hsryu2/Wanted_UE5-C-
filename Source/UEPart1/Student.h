@@ -7,7 +7,6 @@
 #include "LessonInterface.h"
 #include "Student.generated.h"
 
-
 /**
  * 
  */
@@ -23,9 +22,6 @@ public:
 
 	virtual void DoLesson() override;
 
-private:
-	UPROPERTY()
-	int32 Id;
-
-
+	// 알림을 구독할 함수.
+	void GetNotification(const FString& School, const FString& NewCourseInfo);
 };

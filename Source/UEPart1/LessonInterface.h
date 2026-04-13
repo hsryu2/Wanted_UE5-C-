@@ -23,6 +23,8 @@ class UEPART1_API ILessonInterface
 	// Add interface functions to this class. This is the class that will be inherited to implement this interface.
 public:
 	// 이게 정석 (순수 가상 함수 = 추상(abstract) 함수).
+	//virtual void DoLesson() = 0;
+	
+	// 이 방법도 가능.
 	virtual void DoLesson();
-
 };

@@ -16,5 +16,4 @@ class UEPART1_API UStaff : public UPerson
 	
 public:
 	UStaff();
-
 };
