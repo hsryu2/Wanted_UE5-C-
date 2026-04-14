@@ -50,8 +50,79 @@ void UMyGameInstance::Init()
 		}
 	);
 
-		UE_LOG(LogTemp, Log, TEXT("모든 학생 이름의 수: %d"), AllStudentNames.Num());
+	UE_LOG(LogTemp, Log, TEXT("모든 학생 이름의 수: %d"), AllStudentNames.Num());
+
+	// 학생 데이터를 TSet으로 변환.
+	TSet<FString> AllUniqueName;
+	Algo::Transform(
+		StudentsData,
+		AllUniqueName,
+		[](const FStudentData& Val)
+		{
+			return Val.Name;
+		}
+	);
+
+	UE_LOG(LogTemp, Log, TEXT("중복 없는 학생 이름의 수: %d"), AllUniqueName.Num());
+	// 학생 데이터를 TMap으로 변환.
+	Algo::Transform(
+		StudentsData,
+		StudentsMap,
+		[](const FStudentData& Val)
+		{
+			return TPair<int32, FString>(Val.Order, Val.Name);
+		}
+	);
+	
+	UE_LOG(LogTemp, Log, TEXT("순번에 따른 학생 맵의 데이터 수: %d"), StudentsMap.Num());
+
+	// 이름 값을 키로하는 맵.
+	TMap<FString, int32> StudentsMapByUniqueName; 
+
+	// 학생 데이터를 Map으로 변환.
+	Algo::Transform(
+		StudentsData,
+		StudentsMapByUniqueName,
+		[](const FStudentData& Val)
+		{
+			return TPair<FString, int32>(Val.Name, Val.Order);
+		}
+	);
+
+	UE_LOG(LogTemp, Log, TEXT("이름에 따른 학생 맵의 데이터 수: %d"), StudentsMapByUniqueName.Num());
+	
+	// 이름 중복을 허용하려는 경우.
+	TMultiMap<FString, int32> StudentsMapByName;
+	Algo::Transform(
+		StudentsData,
+		StudentsMapByName,
+		[](const FStudentData& Val)
+		{
+			return TPair<FString, int32>(Val.Name, Val.Order);
+		}
+	);
+
+	UE_LOG(LogTemp, Log, TEXT("이름에 따른 학생 멀티 맵의 데이터 수: %d"), StudentsMapByName.Num());
+
+
+	// 검색.
+	const FString TargetName(TEXT("이혜은"));
+	TArray<int32> AllOrders;
+	StudentsMapByName.MultiFind(TargetName, AllOrders);
+
+	UE_LOG(LogTemp, Log, TEXT("이름이 %s인 학생 수 : %d"), *TargetName, AllOrders.Num());
+
+	// TSet에 구조체 넣어보기.
+	TSet<FStudentData> StudentsSet;
+	for (int32 i = 1; i <= StudentNum; i++)
+	{
+		StudentsSet.Emplace(FStudentData
+			(MakeRandomName(), i));
+	}
+	
+	UE_LOG(LogTemp, Log, TEXT("학생 데이터 셋의 수 : %d"), StudentsSet.Num());
 
 	//UE_LOG(LogTemp, Log, TEXT("====================="));
+
 
 }
