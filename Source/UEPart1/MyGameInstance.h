@@ -4,8 +4,11 @@
 
 #include "CoreMinimal.h"
 #include "Engine/GameInstance.h"
-#include "StudentData.h"
 #include "MyGameInstance.generated.h"
+
+// 전방 선언.
+class UStudent;
+class FStudentManager;
 
 /**
  * 
@@ -14,23 +17,26 @@ UCLASS()
 class UEPART1_API UMyGameInstance : public UGameInstance
 {
 	GENERATED_BODY()
+	
 
 
-public:
-	// 게임 인스턴스를 초기화할 때 사용하는 함수.
+protected:
+	// 초기화 작업 시 사용.
 	virtual void Init() override;
 
+	// 종료할 때 정리 작업용으로 사용.
+	virtual void Shutdown() override;
+
 private:
-	// 구조체의 경우, 스택 메모리(항상은 아님)에서 관리.
-	TArray <FStudentData> StudentsData;
+	TObjectPtr<UStudent> NonPropStudent;
 
-	// UObject의 경우 힙에 배치 및 관리됨.
-	// TArray에서 UObject 타입을 사용할 때는 UPROPERTY 필수.
 	UPROPERTY()
-	TArray<TObjectPtr<class UStudent>> Students;
-
-	TMap<int32, FString> StudentsMap;
+	TObjectPtr<UStudent> PropStudent;
 	
-	
+	TArray<TObjectPtr<UStudent>> NonPropStudents;
 
+	UPROPERTY()
+	TArray<TObjectPtr<UStudent>> PropStudents;
+
+	FStudentManager* StudentManager = nullptr;
 };
