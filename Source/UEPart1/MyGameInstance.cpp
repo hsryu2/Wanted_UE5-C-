@@ -4,6 +4,7 @@
 #include "MyGameInstance.h"
 #include "StudentData.h"
 #include "Student.h"
+#include "JsonObjectConverter.h"
 
 UMyGameInstance::UMyGameInstance()
 {
@@ -158,6 +159,75 @@ void UMyGameInstance::Init()
 			// 출력.
 			UE_LOG(LogTemp, Log, TEXT("[ObjectData] 이름 : %s, 순번 : %d"), *StudentDest->GetName(), StudentDest->GetOrder());
 		}
+
+	}
+
+	// JSON(JavaScript Object Notation) 직렬화.
+	{
+		const FString JsonDataFileName(
+			TEXT("StudentJsonData.json")
+		);
+
+		// 저장할 파일 경로 값.
+		FString JsonDataAbsolutePath = FPaths::Combine(SavePath,JsonDataFileName);
+		
+		// 경로 값 정리.
+		FPaths::MakeStandardFilename(JsonDataAbsolutePath);
+
+		// JSON 직렬화 과정.
+		// UObject -> JSON Object -> JSON 문자열 -> 기록.
+		TSharedRef<FJsonObject> JsonObjectRef = MakeShared<FJsonObject>();
+		
+		//JSON 오브젝트로 변환.
+
+
+		FJsonObjectConverter::UStructToJsonObject(
+			StudentSource->StaticClass(),
+			StudentSource,
+			JsonObjectRef
+		);
+
+		// 직렬화.
+		FString JsonOutString;
+		TSharedRef<TJsonWriter<TCHAR>> JsonWriterAr =
+			TJsonWriterFactory<TCHAR>::Create(&JsonOutString);
+
+		if (FJsonSerializer::Serialize(JsonObjectRef, JsonWriterAr))
+		{
+			// 성공한 경우 파일에 저장.
+			FFileHelper::SaveStringToFile(
+				JsonOutString,
+				*JsonDataAbsolutePath
+			);
+		}
+
+		// 역 직렬화
+		FString JsonInString;
+		//파일에서 문자열로 읽어오기.
+		FFileHelper::LoadFileToString(
+			JsonInString, *JsonDataAbsolutePath
+		);
+
+		// 역직렬화를 위한 아카이브 생성.
+		TSharedRef<TJsonReader<TCHAR>> JsonReaderAr
+			= TJsonReaderFactory<TCHAR>::Create(JsonInString);
+
+		TSharedPtr<FJsonObject> JsonObjectDest;
+		if (FJsonSerializer::Deserialize(JsonReaderAr, JsonObjectDest))
+		{
+			// 언리얼 오브젝트 생성 후 변환.
+			UStudent* JsonStudentDest = NewObject<UStudent>();
+			// JsonObjectConverter를 활용해 변환.
+			if (FJsonObjectConverter::JsonObjectToUStruct(
+				JsonObjectDest.ToSharedRef(),
+				UStudent::StaticClass(),
+				JsonStudentDest
+			))
+			{
+				UE_LOG(LogTemp, Log, TEXT("[JsonData] 이름 : %s, 순번 : %d"), *JsonStudentDest->GetName(), JsonStudentDest->GetOrder());
+			}
+		}
+
 
 	}
 
